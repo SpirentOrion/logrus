@@ -51,6 +51,41 @@ func New() *Logger {
 	}
 }
 
+// SetOutput sets the standard logger output.
+func (logger *Logger) SetOutput(out io.Writer) {
+	logger.mu.Lock()
+	defer logger.mu.Unlock()
+	logger.Out = out
+}
+
+// SetFormatter sets the standard logger formatter.
+func (logger *Logger) SetFormatter(formatter Formatter) {
+	logger.mu.Lock()
+	defer logger.mu.Unlock()
+	logger.Formatter = formatter
+}
+
+// SetLevel sets the standard logger level.
+func (logger *Logger) SetLevel(level Level) {
+	logger.mu.Lock()
+	defer logger.mu.Unlock()
+	logger.Level = level
+}
+
+// GetLevel returns the standard logger level.
+func (logger *Logger) GetLevel() Level {
+	logger.mu.Lock()
+	defer logger.mu.Unlock()
+	return logger.Level
+}
+
+// AddHook adds a hook to the standard logger hooks.
+func (logger *Logger) AddHook(hook Hook) {
+	logger.mu.Lock()
+	defer logger.mu.Unlock()
+	logger.Hooks.Add(hook)
+}
+
 // Adds a field to the log entry, note that you it doesn't log until you call
 // Debug, Print, Info, Warn, Fatal or Panic. It only creates a log entry.
 // Ff you want multiple fields, use `WithFields`.
